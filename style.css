@@ -691,6 +691,47 @@ select {
 }
 
 /* ============================================
+   SWIPE TO DELETE
+   ============================================ */
+.swipe-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  margin-bottom: 2px;
+}
+
+.swipe-container .memo-item {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-primary);
+  margin-bottom: 0;
+  will-change: transform;
+}
+
+.swipe-delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--danger);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  transition: background var(--transition-fast);
+}
+
+.swipe-delete-btn:active {
+  background: var(--danger-hover);
+}
+
+/* ============================================
    MEMO EDITOR PANEL
    ============================================ */
 .memo-editor-panel {

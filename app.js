@@ -412,13 +412,16 @@ function renderMemoList() {
         const isActive = memo.id === currentMemoId;
 
         html += `
-      <div class="memo-item ${isActive ? 'active' : ''}" data-memo-id="${memo.id}">
-        <div class="memo-item-title">${escapeHtml(title)}</div>
-        <div class="memo-item-preview">${escapeHtml(preview)}</div>
-        <div class="memo-item-meta">
-          <span class="memo-item-category">🏷️ ${escapeHtml(memo.category || '未分類')}</span>
-          <span>${date}</span>
+      <div class="swipe-container" data-memo-id="${memo.id}">
+        <div class="memo-item ${isActive ? 'active' : ''}" data-memo-id="${memo.id}">
+          <div class="memo-item-title">${escapeHtml(title)}</div>
+          <div class="memo-item-preview">${escapeHtml(preview)}</div>
+          <div class="memo-item-meta">
+            <span class="memo-item-category">🏷️ ${escapeHtml(memo.category || '未分類')}</span>
+            <span>${date}</span>
+          </div>
         </div>
+        <button class="swipe-delete-btn" data-memo-id="${memo.id}">🗑️ 削除</button>
       </div>
     `;
     });
@@ -431,6 +434,9 @@ function renderMemoList() {
             openEditor(item.dataset.memoId);
         });
     });
+
+    // スワイプ削除イベント
+    initSwipeToDelete();
 }
 
 function updateMemoListTitle() {
@@ -683,6 +689,76 @@ function initEventListeners() {
             DOM.deleteCategoryDialog.classList.add('hidden');
             categoryToDelete = null;
         }
+    });
+}
+
+// ============================================
+// Swipe to Delete (Mobile)
+// ============================================
+let activeSwipeContainer = null;
+
+function initSwipeToDelete() {
+    const containers = DOM.memoList.querySelectorAll('.swipe-container');
+
+    containers.forEach(container => {
+        const memoItem = container.querySelector('.memo-item');
+        const deleteBtn = container.querySelector('.swipe-delete-btn');
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        memoItem.addEventListener('touchstart', (e) => {
+            // 開いている他のスワイプを閉じる
+            if (activeSwipeContainer && activeSwipeContainer !== container) {
+                activeSwipeContainer.classList.remove('swiped');
+                activeSwipeContainer.querySelector('.memo-item').style.transform = '';
+            }
+
+            startX = e.touches[0].clientX;
+            currentX = startX;
+            isDragging = true;
+            memoItem.style.transition = 'none';
+        }, { passive: true });
+
+        memoItem.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            const diffX = currentX - startX;
+
+            // 左スワイプのみ
+            if (diffX < 0) {
+                const translateX = Math.max(diffX, -100);
+                memoItem.style.transform = `translateX(${translateX}px)`;
+            }
+        }, { passive: true });
+
+        memoItem.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            memoItem.style.transition = 'transform 0.25s ease';
+            const diffX = currentX - startX;
+
+            if (diffX < -60) {
+                // スワイプ成功 — 削除ボタンを表示
+                memoItem.style.transform = 'translateX(-80px)';
+                container.classList.add('swiped');
+                activeSwipeContainer = container;
+            } else {
+                // スワイプ不足 — 元に戻す
+                memoItem.style.transform = '';
+                container.classList.remove('swiped');
+                if (activeSwipeContainer === container) {
+                    activeSwipeContainer = null;
+                }
+            }
+        });
+
+        // 削除ボタンクリック
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const memoId = deleteBtn.dataset.memoId;
+            deleteMemo(memoId);
+        });
     });
 }
 
