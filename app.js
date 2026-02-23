@@ -144,12 +144,23 @@ function setupRealtimeListeners() {
                 ...doc.data()
             }));
             renderMemoList();
-            // 現在編集中のメモが更新された場合は内容を反映（自分の編集以外）
+            // 現在編集中のメモが更新された場合は内容を反映
             if (currentMemoId) {
                 const currentMemo = memos.find(m => m.id === currentMemoId);
                 if (!currentMemo) {
                     // 削除された場合
                     closeEditor();
+                } else {
+                    // 別デバイスからの変更を反映（自分が入力中でなければ）
+                    const titleEl = DOM.editorTitle;
+                    const textareaEl = DOM.editorTextarea;
+                    const isTyping = document.activeElement === titleEl || document.activeElement === textareaEl;
+                    if (!isTyping) {
+                        titleEl.value = currentMemo.title || '';
+                        textareaEl.value = currentMemo.content || '';
+                        DOM.editorCategory.value = currentMemo.category || '未分類';
+                        DOM.editorMeta.textContent = `作成: ${formatDate(currentMemo.createdAt)} ・ 更新: ${formatDate(currentMemo.updatedAt)}`;
+                    }
                 }
             }
         }, (error) => {
