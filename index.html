@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="スマホ・PCでリアルタイム同期するクラウドメモアプリ">
     <title>CloudMemo — クラウドメモ</title>
     <link rel="stylesheet" href="style.css">
@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <button id="btnNewMemo" class="btn-new-memo">
-                    <span>＋</span> 新規メモ
+                    <span>＋</span><span class="btn-text"> 新規メモ</span>
                 </button>
             </header>
 
@@ -148,7 +148,7 @@
 
                     <div id="editorContent" class="hidden">
                         <div class="editor-toolbar">
-                            <div style="display:flex; align-items:center; gap:var(--space-sm);">
+                            <div class="editor-toolbar-left">
                                 <button id="btnBackToList" class="btn-back-to-list">← 戻る</button>
                                 <select id="editorCategory" class="editor-category-select">
                                     <!-- カテゴリオプションが動的に追加される -->

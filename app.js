@@ -474,10 +474,9 @@ function openEditor(memoId) {
         item.classList.toggle('active', item.dataset.memoId === memoId);
     });
 
-    // モバイル: エディタを表示
-    if (window.innerWidth <= 768) {
-        DOM.memoListPanel.classList.add('hidden-mobile');
-        DOM.memoEditorPanel.classList.remove('hidden-mobile');
+    // モバイル: メモリストをスライドアウトしてエディタを表示
+    if (window.innerWidth < 768) {
+        DOM.memoListPanel.classList.add('slide-out');
     }
 }
 
@@ -486,11 +485,8 @@ function closeEditor() {
     DOM.editorEmpty.classList.remove('hidden');
     DOM.editorContent.classList.add('hidden');
 
-    // モバイル: リストに戻る
-    if (window.innerWidth <= 768) {
-        DOM.memoListPanel.classList.remove('hidden-mobile');
-        DOM.memoEditorPanel.classList.add('hidden-mobile');
-    }
+    // モバイル: メモリストに戻る
+    DOM.memoListPanel.classList.remove('slide-out');
 
     // アクティブ解除
     DOM.memoList.querySelectorAll('.memo-item').forEach(item => {
