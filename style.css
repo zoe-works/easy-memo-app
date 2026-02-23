@@ -579,7 +579,7 @@ select {
 }
 
 /* ============================================
-   MEMO AREA — Mobile: stacked views
+   MEMO AREA — Mobile: full-screen switching
    ============================================ */
 .memo-area {
   flex: 1;
@@ -596,17 +596,8 @@ select {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: rgba(15, 15, 26, 0.5);
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  transition: transform var(--transition-normal), opacity var(--transition-normal);
-}
-
-.memo-list-panel.slide-out {
-  transform: translateX(-100%);
-  opacity: 0;
-  pointer-events: none;
+  background: var(--bg-primary);
+  flex: 1;
 }
 
 .memo-list-header {
@@ -703,13 +694,17 @@ select {
    MEMO EDITOR PANEL
    ============================================ */
 .memo-editor-panel {
-  position: absolute;
-  inset: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   overflow: hidden;
-  z-index: 5;
   background: var(--bg-primary);
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
+
+.memo-editor-panel.active-mobile {
+  display: flex;
 }
 
 .editor-toolbar {
@@ -1103,21 +1098,20 @@ select {
   }
 
   .memo-list-panel {
-    position: relative;
     width: 320px;
     flex-shrink: 0;
+    flex: none;
     border-right: 1px solid var(--border-color);
   }
 
-  .memo-list-panel.slide-out {
-    transform: none;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
   .memo-editor-panel {
+    display: flex;
     position: relative;
     flex: 1;
+  }
+
+  .memo-editor-panel.active-mobile {
+    position: relative;
   }
 
   .btn-back-to-list {

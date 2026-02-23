@@ -474,9 +474,9 @@ function openEditor(memoId) {
         item.classList.toggle('active', item.dataset.memoId === memoId);
     });
 
-    // モバイル: メモリストをスライドアウトしてエディタを表示
+    // モバイル: エディタを全画面表示
     if (window.innerWidth < 768) {
-        DOM.memoListPanel.classList.add('slide-out');
+        DOM.memoEditorPanel.classList.add('active-mobile');
     }
 }
 
@@ -486,7 +486,7 @@ function closeEditor() {
     DOM.editorContent.classList.add('hidden');
 
     // モバイル: メモリストに戻る
-    DOM.memoListPanel.classList.remove('slide-out');
+    DOM.memoEditorPanel.classList.remove('active-mobile');
 
     // アクティブ解除
     DOM.memoList.querySelectorAll('.memo-item').forEach(item => {
