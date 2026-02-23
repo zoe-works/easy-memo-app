@@ -151,16 +151,11 @@ function setupRealtimeListeners() {
                     // 削除された場合
                     closeEditor();
                 } else {
-                    // 別デバイスからの変更を反映（自分が入力中でなければ）
-                    const titleEl = DOM.editorTitle;
-                    const textareaEl = DOM.editorTextarea;
-                    const isTyping = document.activeElement === titleEl || document.activeElement === textareaEl;
-                    if (!isTyping) {
-                        titleEl.value = currentMemo.title || '';
-                        textareaEl.value = currentMemo.content || '';
-                        DOM.editorCategory.value = currentMemo.category || '未分類';
-                        DOM.editorMeta.textContent = `作成: ${formatDate(currentMemo.createdAt)} ・ 更新: ${formatDate(currentMemo.updatedAt)}`;
-                    }
+                    // 別デバイスからの変更を常に反映
+                    DOM.editorTitle.value = currentMemo.title || '';
+                    DOM.editorTextarea.value = currentMemo.content || '';
+                    DOM.editorCategory.value = currentMemo.category || '未分類';
+                    DOM.editorMeta.textContent = `作成: ${formatDate(currentMemo.createdAt)} ・ 更新: ${formatDate(currentMemo.updatedAt)}`;
                 }
             }
         }, (error) => {
