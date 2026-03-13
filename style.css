@@ -752,6 +752,13 @@ select {
   z-index: 20;
 }
 
+#editorContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .memo-editor-panel.active-mobile {
   display: flex;
 }
@@ -844,6 +851,7 @@ select {
   color: var(--text-primary);
   width: 100%;
   margin-bottom: var(--space-xs);
+  flex-shrink: 0;
 }
 
 .editor-title::placeholder {
@@ -857,7 +865,7 @@ select {
   resize: none;
   padding: var(--space-sm) 0;
   color: var(--text-primary);
-  min-height: 150px;
+  min-height: 500px;
 }
 
 .editor-content::placeholder {
