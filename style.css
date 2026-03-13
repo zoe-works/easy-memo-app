@@ -837,7 +837,7 @@ select {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-xs) var(--space-md);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -861,11 +861,10 @@ select {
 .editor-content {
   flex: 1;
   font-size: var(--font-size-md);
-  line-height: 1.8;
+  line-height: 1.5;
   resize: none;
-  padding: var(--space-sm) 0;
+  padding: 0;
   color: var(--text-primary);
-  min-height: 500px;
 }
 
 .editor-content::placeholder {
