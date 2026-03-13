@@ -18,6 +18,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const APP_VERSION = '1.1.0';
 
 // ============================================
 // State
@@ -76,6 +77,7 @@ const DOM = {
     deleteCategoryDialog: $('deleteCategoryDialog'),
     btnCancelDeleteCategory: $('btnCancelDeleteCategory'),
     btnConfirmDeleteCategory: $('btnConfirmDeleteCategory'),
+    appVersion: $('appVersion'),
 };
 
 // ============================================
@@ -126,6 +128,7 @@ function showApp() {
     DOM.userAvatar.src = currentUser.photoURL || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%237c5cf5"/><text x="50" y="55" text-anchor="middle" dy=".1em" font-size="40" fill="white">' + (currentUser.displayName?.[0] || '?') + '</text></svg>';
     DOM.userName.textContent = currentUser.displayName || 'ユーザー';
     DOM.userEmail.textContent = currentUser.email || '';
+    DOM.appVersion.textContent = `v${APP_VERSION}`;
 }
 
 // ============================================
@@ -151,9 +154,14 @@ function setupRealtimeListeners() {
                     // 削除された場合
                     closeEditor();
                 } else {
-                    // 別デバイスからの変更を常に反映
-                    DOM.editorTitle.value = currentMemo.title || '';
-                    DOM.editorTextarea.value = currentMemo.content || '';
+                    // 他デバイスからの変更を反映するが、現在フォーカスしている要素は上書きしない
+                    // これにより入力中の文字消失やカーソル飛びを防ぐ
+                    if (document.activeElement !== DOM.editorTitle) {
+                        DOM.editorTitle.value = currentMemo.title || '';
+                    }
+                    if (document.activeElement !== DOM.editorTextarea) {
+                        DOM.editorTextarea.value = currentMemo.content || '';
+                    }
                     DOM.editorCategory.value = currentMemo.category || '未分類';
                     DOM.editorMeta.textContent = `作成: ${formatDate(currentMemo.createdAt)} ・ 更新: ${formatDate(currentMemo.updatedAt)}`;
                 }
@@ -242,7 +250,7 @@ function saveMemo() {
             updateSaveStatus('error');
             showToast('保存に失敗しました', 'error');
         }
-    }, 500);
+    }, 1000);
 }
 
 async function deleteMemo(memoId) {

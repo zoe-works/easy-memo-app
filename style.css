@@ -462,6 +462,14 @@ select {
   color: var(--danger);
 }
 
+.app-version {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-sm);
+  opacity: 0.6;
+}
+
 /* ============================================
    MAIN CONTENT
    ============================================ */
@@ -822,20 +830,20 @@ select {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .editor-title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   font-weight: 700;
-  padding: var(--space-sm) 0;
+  padding: var(--space-xs) 0;
   border: none;
   background: none;
   color: var(--text-primary);
   width: 100%;
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .editor-title::placeholder {
@@ -1172,7 +1180,7 @@ select {
   }
 
   .editor-title {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
   }
 
   .login-card {
